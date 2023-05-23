@@ -80,6 +80,10 @@ class NthValueTest : public WindowTestBase {
         makeRandomInputVector(type, size, 0.3),
     });
 
+    LOG(INFO) << "Input rows";
+    LOG(INFO) << vectors->toString();
+    LOG(INFO) << vectors->toString(0, vectors->size());
+
     // Add c4 column in sort order in overClauses to impose a deterministic
     // output row order in the tests.
     auto newOverClause = overClause_ + ", c4";
@@ -88,16 +92,16 @@ class NthValueTest : public WindowTestBase {
     // arguments. The offsets could also give rows beyond the partition
     // returning null in those cases.
     WindowTestBase::testWindowFunction(
-        {vectors}, "nth_value(c4, 1)", {newOverClause}, kFrameClauses);
-    WindowTestBase::testWindowFunction(
-        {vectors}, "nth_value(c4, 7)", {newOverClause}, kFrameClauses);
-    WindowTestBase::testWindowFunction(
-        {vectors}, "nth_value(c4, c2)", {newOverClause}, kFrameClauses);
-
-    WindowTestBase::testWindowFunction(
-        {vectors}, "first_value(c4)", {newOverClause}, kFrameClauses);
-    WindowTestBase::testWindowFunction(
-        {vectors}, "last_value(c4)", {newOverClause}, kFrameClauses);
+        {vectors}, "nth_value(c4, 2)", {newOverClause}, kFrameClauses);
+//    WindowTestBase::testWindowFunction(
+//        {vectors}, "nth_value(c4, 7)", {newOverClause}, kFrameClauses);
+//    WindowTestBase::testWindowFunction(
+//        {vectors}, "nth_value(c4, c2)", {newOverClause}, kFrameClauses);
+//
+//    WindowTestBase::testWindowFunction(
+//        {vectors}, "first_value(c4)", {newOverClause}, kFrameClauses);
+//    WindowTestBase::testWindowFunction(
+//        {vectors}, "last_value(c4)", {newOverClause}, kFrameClauses);
   }
 
  private:

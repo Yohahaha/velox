@@ -608,9 +608,14 @@ RowVectorPtr Window::getOutput() {
   // Compute the output values of window functions.
   callApplyLoop(numOutputRows, windowOutputs);
 
+
   for (int j = numInputColumns_; j < outputType_->size(); j++) {
     result->childAt(j) = windowOutputs[j - numInputColumns_];
   }
+
+  LOG(INFO) << "window output";
+  LOG(INFO) << result->toString(0, result->size());
+
 
   finished_ = (numProcessedRows_ == sortedRows_.size());
   return result;

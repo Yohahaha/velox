@@ -488,6 +488,8 @@ const std::string parseWindow(const std::string& expr) {
 } // namespace
 
 TEST(DuckParserTest, window) {
+  auto sql = parseWindow("lag(d, 1) over (partition by a order by b) as c");
+  LOG(INFO) << sql;
   EXPECT_EQ(
       "row_number() AS c OVER (PARTITION BY \"a\" ORDER BY  \"b\" ASC NULLS LAST"
       " RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)",

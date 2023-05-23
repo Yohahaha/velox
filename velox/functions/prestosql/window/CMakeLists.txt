@@ -19,6 +19,7 @@ add_library(
   velox_window
   CumeDist.cpp
   FirstLastValue.cpp
+  Lead.cpp
   NthValue.cpp
   Ntile.cpp
   Rank.cpp

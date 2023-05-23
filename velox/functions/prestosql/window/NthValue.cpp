@@ -66,6 +66,10 @@ class NthValueFunction : public exec::WindowFunction {
     auto numRows = frameStarts->size() / sizeof(vector_size_t);
     auto rawFrameStarts = frameStarts->as<vector_size_t>();
     auto rawFrameEnds = frameEnds->as<vector_size_t>();
+    LOG(INFO) << "rows " << numRows;
+    validRows.applyToSelected([&](vector_size_t i) {
+      LOG(INFO) << "row idx " << i << " frame st " << rawFrameStarts[i] << " ed " << rawFrameEnds[i];
+    });
 
     rowNumbers_.resize(numRows);
     if (constantOffset_.has_value() || isConstantOffsetNull_) {
@@ -79,6 +83,12 @@ class NthValueFunction : public exec::WindowFunction {
         valueIndex_, rowNumbersRange, resultOffset, result);
 
     partitionOffset_ += numRows;
+    LOG(INFO) << "rowNumbers";
+    std::stringstream ss;
+    std::for_each(rowNumbers_.begin(), rowNumbers_.end(), [&](vector_size_t i) {
+      ss << i << " ";
+    });
+    LOG(INFO) << ss.str();
   }
 
  private:

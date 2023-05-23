@@ -118,6 +118,7 @@ void WindowTestBase::testWindowFunction(
     for (auto& frameClause : frameClauses) {
       auto queryInfo =
           buildWindowQuery(input, function, overClause, frameClause);
+      LOG(INFO) << queryInfo.querySql;
       SCOPED_TRACE(queryInfo.functionSql);
       assertQuery(queryInfo.planNode, queryInfo.querySql);
     }
