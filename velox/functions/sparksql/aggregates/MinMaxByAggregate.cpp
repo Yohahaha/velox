@@ -87,16 +87,6 @@ template <
     class Aggregate,
     bool isMaxFunc>
 exec::AggregateRegistrationResult registerMinMaxBy(const std::string& name) {
-  std::vector<std::shared_ptr<exec::AggregateFunctionSignature>> signatures;
-  // V, C -> row(V, C) -> V.
-  signatures.push_back(exec::AggregateFunctionSignatureBuilder()
-                           .typeVariable("V")
-                           .typeVariable("C")
-                           .returnType("V")
-                           .intermediateType("row(V,C)")
-                           .argumentType("V")
-                           .argumentType("C")
-                           .build());
   const std::vector<std::string> supportedCompareTypes = {
       "boolean",
       "tinyint",
@@ -108,6 +98,18 @@ exec::AggregateRegistrationResult registerMinMaxBy(const std::string& name) {
       "varchar",
       "date",
       "timestamp"};
+  std::vector<std::shared_ptr<exec::AggregateFunctionSignature>> signatures;
+  for (const auto& compareType : supportedCompareTypes) {
+    // V, C -> row(V, C) -> V.
+    signatures.push_back(
+        exec::AggregateFunctionSignatureBuilder()
+            .typeVariable("V")
+            .returnType("V")
+            .intermediateType(fmt::format("row(V,{})", compareType))
+            .argumentType("V")
+            .argumentType(compareType)
+            .build());
+  }
 
   return exec::registerAggregateFunction(
       name,
